@@ -15,6 +15,7 @@ def process():
     json_data = request.get_json()
     df = pd.DataFrame(json_data)
     df.dropna(subset='text', inplace=True)
+    start = datetime.now()
     df['pred'] = model.model.predict(df.reset_index()['text'])
     df['pred_str'] = df['pred'].map(classes_num_to_str)
     return Response(df.to_json(orient="records"), mimetype='application/json')
