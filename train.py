@@ -1,5 +1,6 @@
 import logging
 
+import joblib
 import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
@@ -53,6 +54,11 @@ def get_metrics(df_val):
     plt.show()
 
 
+def save_model(set_fit_model):
+    #Here you can change the path as you with - same path needed to be loaded in app
+    joblib.dump(set_fit_model, 'model.joblib')
+
+
 def main():
     df_train, df_val = split_rename()
     train_ds = Dataset.from_pandas(df_train)
@@ -64,6 +70,7 @@ def main():
     set_fit_model.train()
     df_val['pred'] = set_fit_model.model.predict(df_val.reset_index()['text'])
     get_metrics(df_val)
+    save_model(set_fit_model)
     return set_fit_model
 
 
